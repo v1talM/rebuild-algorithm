@@ -1,7 +1,7 @@
 package Contracts
 
 import (
-	"rebuild/BinaryTree"
+	"rebuild-algorithm/BinaryTree"
 )
 
 type BinaryTreeNodeContract interface{
@@ -28,7 +28,8 @@ type BinaryTreeContract interface {
 	PrintBinaryTree(height int)
 }
 
-type BSTContract interface {
-
+type AVLTreeContract interface {
+	SetHeight(height int)
+	GetHeight() int
 }
 

@@ -83,7 +83,7 @@ func printBinaryTree(node *BinaryTreeNode, height int)  {
 	if node != nil {
 		printBinaryTree(node.GetRChild(), height + 1)
 		for i := 0; i < height; i++ {
-			fmt.Printf("  ")
+			fmt.Printf("    ")
 		}
 		fmt.Println(node.GetData())
 		printBinaryTree(node.GetLChild(), height + 1)
