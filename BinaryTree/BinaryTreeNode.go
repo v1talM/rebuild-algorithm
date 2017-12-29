@@ -2,12 +2,13 @@ package BinaryTree
 
 type BinaryTreeNode struct {
 	data int
+	parent,
 	lChild,
 	rChild *BinaryTreeNode
 }
 
 func NewBinaryTreeNode(data int) *BinaryTreeNode {
-	return &BinaryTreeNode{data, nil, nil}
+	return &BinaryTreeNode{data, nil, nil, nil}
 }
 
 func (this *BinaryTreeNode) GetData() int {
@@ -35,15 +36,24 @@ func (this *BinaryTreeNode) GetRChild() *BinaryTreeNode {
 }
 
 func (this *BinaryTreeNode) HasLChild() bool {
-	if this.GetLChild() != nil {
-		return true
-	}
-	return false
+	return this.GetLChild() != nil
 }
 
 func (this *BinaryTreeNode) HasRChild() bool {
-	if this.GetRChild() != nil {
-		return true
+	return this.GetRChild() != nil
+}
+
+func (this *BinaryTreeNode) HasParent() bool {
+	return this.parent != nil
+}
+
+func (this *BinaryTreeNode) GetParent() *BinaryTreeNode {
+	if this.HasParent() {
+		return this.parent
 	}
-	return false
+	return nil
+}
+
+func (this *BinaryTreeNode) SetParent(node *BinaryTreeNode)  {
+	this.parent = node
 }

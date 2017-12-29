@@ -1,6 +1,8 @@
 package BinaryTree
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type BinaryTree struct {
 	root *BinaryTreeNode
@@ -11,7 +13,7 @@ func (this *BinaryTree) GetRoot() *BinaryTreeNode {
 }
 
 func (this *BinaryTree) InOrderWalk()  {
-	inOrderWalk(this.root)
+	InOrderWalk(this.GetRoot())
 }
 
 func (this *BinaryTree) InsertNode(data int)  {
@@ -19,12 +21,17 @@ func (this *BinaryTree) InsertNode(data int)  {
 	insertNode(root, data)
 }
 
-func (this *BinaryTree) SearchNode(data int) bool {
+func (this *BinaryTree) SearchNode(data int) *BinaryTreeNode {
 	target := searchNode(this.GetRoot(), data)
 	if target != nil {
-		return true
+		return target
 	}
-	return false
+	return nil
+}
+
+func (this *BinaryTree) DeleteNode(data int)  {
+	target := searchNode(this.GetRoot(), data)
+	deleteNode(target)
 }
 
 func (this *BinaryTree) PrintBinaryTree(height int)  {
@@ -40,11 +47,11 @@ func NewBinarySearchTree(data...int) *BinaryTree {
 	return bst
 }
 
-func inOrderWalk(node *BinaryTreeNode)  {
+func InOrderWalk(node *BinaryTreeNode)  {
 	if node != nil {
-		inOrderWalk(node.GetLChild())
+		InOrderWalk(node.GetLChild())
 		fmt.Printf("%v ", node.GetData())
-		inOrderWalk(node.GetRChild())
+		InOrderWalk(node.GetRChild())
 	}
 }
 
@@ -54,6 +61,7 @@ func insertNode(node *BinaryTreeNode, data int)  {
 			insertNode(node.GetLChild(), data)
 		} else {
 			newNode := NewBinaryTreeNode(data)
+			newNode.SetParent(node)
 			node.SetLChild(newNode)
 		}
 	} else {
@@ -61,6 +69,7 @@ func insertNode(node *BinaryTreeNode, data int)  {
 			insertNode(node.GetRChild(), data)
 		} else {
 			newNode := NewBinaryTreeNode(data)
+			newNode.SetParent(node)
 			node.SetRChild(newNode)
 		}
 	}
@@ -87,5 +96,36 @@ func printBinaryTree(node *BinaryTreeNode, height int)  {
 		}
 		fmt.Println(node.GetData())
 		printBinaryTree(node.GetLChild(), height + 1)
+	}
+}
+
+func minNode(node *BinaryTreeNode) *BinaryTreeNode {
+	for node.GetLChild() != nil {
+		node = node.GetLChild()
+	}
+	return node
+}
+
+func deleteNode(node *BinaryTreeNode)  {
+	parent := node.GetParent()
+	origin := node
+	if node.HasLChild() && node.HasRChild() {
+		min := minNode(node.GetRChild())
+		node.SetData(min.GetData())
+		deleteNode(min)
+	} else if node.HasLChild() {
+		node = node.GetLChild()
+	} else if node.HasRChild() {
+		node = node.GetRChild()
+	} else {
+		node = nil
+	}
+	if node != nil {
+		node.SetParent(parent)
+	}
+	if parent.GetLChild() == origin {
+		parent.SetLChild(node)
+	}else {
+		parent.SetRChild(node)
 	}
 }
