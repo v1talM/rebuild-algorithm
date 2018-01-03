@@ -30,7 +30,8 @@ func (this *AVLTree) InsertNode(data int)  {
 }
 
 func (this *AVLTree) DeleteNode(data int)  {
-
+	target := searchNode(this.GetRoot(), data)
+	deleteNode(target)
 }
 
 func (this *AVLTree) PrintBinaryTree(height int)  {
@@ -54,6 +55,19 @@ func printBinaryTree(node *AVLTreeNode, height int)  {
 		fmt.Println(node.GetData())
 		printBinaryTree(node.GetLChild(), height + 1)
 	}
+}
+
+func searchNode(node *AVLTreeNode, data int) *AVLTreeNode {
+	if node != nil && node.GetData() != data {
+		if data < node.GetData() {
+			node = node.GetLChild()
+			return searchNode(node, data)
+		} else {
+			node = node.GetRChild()
+			return searchNode(node, data)
+		}
+	}
+	return node
 }
 
 func insertNode(node *AVLTreeNode, data int) *AVLTreeNode {
@@ -84,6 +98,31 @@ func insertNode(node *AVLTreeNode, data int) *AVLTreeNode {
 	return node
 }
 
+func deleteNode(node *AVLTreeNode) {
+	parent := node.GetParent()
+	origin := node
+	if node.HasLChild() && node.HasRChild() {
+		min := minNode(node.GetRChild())
+		node.SetData(min.GetData())
+		deleteNode(min)
+	} else if node.HasLChild() {
+		node = node.GetLChild()
+	} else if node.HasRChild() {
+		node = node.GetRChild()
+	}else {
+		node = nil
+	}
+
+	if node != nil {
+		node.SetParent(parent)
+	}
+	if parent.GetLChild() == origin {
+		parent.SetLChild(node)
+	} else {
+		parent.SetRChild(node)
+	}
+}
+
 func max(x, y int) int {
 	if x > y {
 		return x
@@ -102,6 +141,7 @@ func leftRotation(x *AVLTreeNode) *AVLTreeNode {
 	x.SetRChild(y.GetLChild())
 	y.SetLChild(x)
 	x.SetParent(y)
+	y.GetRChild().SetParent(y)
 	return y
 }
 
@@ -116,6 +156,7 @@ func rightRotation(x *AVLTreeNode) *AVLTreeNode {
 	x.SetLChild(y.GetRChild())
 	y.SetRChild(x)
 	x.SetParent(y)
+	y.GetLChild().SetParent(y)
 	return y
 }
 
@@ -156,3 +197,9 @@ func height(node *AVLTreeNode) int {
 	return max(lh, rh)
 }
 
+func minNode(node *AVLTreeNode) *AVLTreeNode {
+	for node.HasLChild() {
+		node = node.GetLChild()
+	}
+	return node
+}

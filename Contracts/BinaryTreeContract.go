@@ -3,6 +3,7 @@ package Contracts
 import (
 	"rebuild-algorithm/BinaryTree"
 	"rebuild-algorithm/AVLTree"
+	"rebuild-algorithm/RBTree"
 )
 
 type BaseTreeNodeContract interface{
@@ -16,8 +17,6 @@ type BaseTreeNodeContract interface{
 type BaseTreeContract interface{
 	//中序遍历二叉树
 	InOrderWalk()
-	//插入新结点
-	InsertNode(data int)
 	//删除结点
 	DeleteNode(data int)
 	//树状打印二叉树
@@ -44,6 +43,16 @@ type AVLTreeNodeContract interface {
 	GetParent()*AVLTree.AVLTreeNode
 }
 
+type RBTreeNodeContract interface{
+	BaseTreeNodeContract
+	GetLChild() *RBTree.RBTreeNode
+	SetLChild(node *RBTree.RBTreeNode)
+	SetRChild(node *RBTree.RBTreeNode)
+	GetRChild() *RBTree.RBTreeNode
+	SetParent(node *RBTree.RBTreeNode)
+	GetParent() *RBTree.RBTreeNode
+}
+
 type BinaryTreeContract interface {
 	BaseTreeContract
 	//获取根结点信息
@@ -55,4 +64,10 @@ type BinaryTreeContract interface {
 type AVLTreeContract interface {
 	BaseTreeContract
 	GetRoot() *AVLTree.AVLTreeNode
+}
+
+type RBTreeContract interface{
+	BaseTreeContract
+	InsertNode(pnode *RBTree.RBTreeNode, data int)
+	GetRoot() *RBTree.RBTreeNode
 }

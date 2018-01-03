@@ -13,5 +13,5 @@ func main() {
 	avl.InOrderWalk()
 	fmt.Println("\n打印该AVL树:")
 	avl.PrintBinaryTree(1)
-	fmt.Println("当前AVL树的根结点为:", avl.GetRoot())
+	fmt.Println("当前AVL树的根结点为:", avl.GetRoot().GetLChild().GetLChild())
 }
